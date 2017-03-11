@@ -7,6 +7,6 @@ RUN apk add --no-cache \
   openssh
 
 RUN set -ex \
-  && pip install --no-cache-directory docker-compose \
+  && pip install --no-cache-dir docker-compose \
   && which docker-compose \
   && docker-compose version
