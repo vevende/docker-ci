@@ -1,15 +1,6 @@
 FROM docker:1.13
 
-RUN apk add --no-cache \
-  make \
-  py-pip \
-  git \
-  bash \
-  openssh-client
-
-RUN set -ex \
-  && pip install --no-cache-dir docker-compose \
-  && which docker-compose \
-  && docker-compose version
+RUN apk add --no-cache make bash git rsync openssh-client py-pip tmux tree
 
 CMD ["bash"]
+
