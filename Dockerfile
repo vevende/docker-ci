@@ -3,10 +3,7 @@ FROM docker:1.13
 # Use edge packages
 RUN set -ex \
     && sed -i -e 's/v3\.5/edge/g' /etc/apk/repositories
-
-# Common tools
-RUN set -ex \
-    && apk add --no-cache \
+    && apk add --update --no-cache \
        make openssh-client bash \
        rsync git tmux tree
 
