@@ -1,6 +1,4 @@
 version: "2"
   sut:
     build: .
-    command: python /tests.py
-    volume:
-      - tests.py:/tests.py 
+    command: make
