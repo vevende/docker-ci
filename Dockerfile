@@ -17,7 +17,8 @@ RUN set -ex \
     && ln -s /usr/bin/pydoc3.6     /usr/bin/pydoc \
     && ln -s /usr/bin/pip3.6       /usr/bin/pip \
     && ln -s /usr/bin/easy_install-3.6 /usr/bin/easy_install \
-    && pip install --no-cache-dir --upgrade pip docker-compose
+    && pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir docker-compose
 
 COPY bashrc /root/.bashrc
 
