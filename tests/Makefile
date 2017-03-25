@@ -4,4 +4,3 @@ default: clean
 
 clean:
 	find . -depth  -iname "__pycache__" -exec rm -r {}  \;
-
