@@ -28,7 +28,7 @@ class TestCase(unittest.TestCase):
         run('which docker')
         run('which docker-compose')
         run('which ansible')
-        run('which aq')
+        run('which aws')
         run('which rsync')
         run('which bash')
         run('which tree')
