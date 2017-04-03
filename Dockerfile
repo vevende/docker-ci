@@ -1,12 +1,13 @@
 FROM docker:1.13
 
-ENV LANG C.UTF-8
-ENV LC_COLLATE C
+ENV LANG="C.UTF-8" \
+    LC_ALL="C" \
+    LC_COLLATE="C"
 
 # Use edge packages
 RUN set -ex \
     && apk add --update --no-cache \
-       make openssh-client ca-certificates \
+       build-base openssh-client ca-certificates curl wget \
        bash python py-pip rsync git tmux tree ansible \
     && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir docker-compose
