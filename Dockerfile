@@ -10,5 +10,8 @@ RUN set -ex \
     && pip install --no-cache-dir docker-compose
 
 COPY bashrc /root/.bashrc
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["/bin/bash"]
