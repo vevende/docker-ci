@@ -8,9 +8,9 @@ ENV LANG="C.UTF-8" \
 RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates curl wget \
-       bash python py-pip rsync git tmux tree ansible \
+       bash python py-pip rsync git tmux tree \
     && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir docker-compose
+    && pip install --no-cache-dir docker-compose ansible awscli
 
 COPY bashrc /root/.bashrc
 

@@ -27,18 +27,15 @@ class TestCase(unittest.TestCase):
         run('which git')
         run('which docker')
         run('which docker-compose')
+        run('which ansible')
+        run('which aq')
         run('which rsync')
         run('which bash')
         run('which tree')
         run('which tmux')
-
-    def test_python3(self):
-        run('which pip3')
         run('which pip')
-
         run('which python')
-        run('which python3')
 
         ret = run('python --version')
-        assert ret.stdout.strip() == 'Python 3.6.0'
+        assert ret.stdout.strip() == 'Python 2.7.13'
 

@@ -1,6 +1,6 @@
 
 default: clean
-	python -m unittest -v --locals 
+	python -m unittest -v
 
 clean:
-	find . -depth  -iname "__pycache__" -exec rm -r {}  \;
+	find . -depth  -iname "*.pyc" -exec rm -r {}  \;
