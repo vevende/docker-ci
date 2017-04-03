@@ -7,19 +7,17 @@ Return = namedtuple('Return', ['stdout', 'stderr', 'exitcode'])
 
 def run(command, silent=False):
     args = command.split()
-    ret = subprocess.run(args=args, stdout=subprocess.PIPE)
+    process = subprocess.Popen(args=args,
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+    process.wait()
 
     if not silent:
-        ret.check_returncode()
+        assert process.returncode == 0
 
-    stdout, stderr = None, None
+    stdout, stderr = process.communicate()
 
-    if ret.stdout:
-        stdout = ret.stdout.decode()
-    if ret.stderr:
-        stderr = ret.stderr.decode()
-
-    return Return(stdout, stderr, ret.returncode)
+    return Return(stdout, stderr, process.returncode)
 
 
 class TestCase(unittest.TestCase):
@@ -36,6 +34,15 @@ class TestCase(unittest.TestCase):
         run('which pip')
         run('which python')
 
-        ret = run('python --version')
-        assert ret.stdout.strip() == 'Python 2.7.13'
+        ret = run('python -V')
+        assert ret.stderr.strip() == 'Python 2.7.13', ret.stderr
 
+    def test_slugify(self):
+        ret = run('slugify google.com')
+        assert ret.stdout == 'google-com'
+
+        ret = run('slugify google.com/path/path')
+        assert ret.stdout == 'google-com-path-path'
+
+        ret = run('slugify   word word word words ')
+        assert ret.stdout == 'word-word-word-words'
