@@ -5,7 +5,7 @@ RUN set -ex \
     && sed -i -e 's/v3\.\d/edge/g' /etc/apk/repositories \
     && apk add --update --no-cache \
        make openssh-client bash \
-       rsync git tmux tree
+       rsync git tmux tree ansible
 
 # Language and framework related
 RUN set -ex \
