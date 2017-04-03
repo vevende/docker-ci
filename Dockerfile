@@ -9,7 +9,7 @@ RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates \
        bash rsync git tmux tree curl wget \
-       python python-dev py-pip libffi-dev \
+       python python-dev py-pip libffi-dev openssl-dev \
     && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir docker-compose ansible awscli
     && mkdir -p ~/.ssh \
