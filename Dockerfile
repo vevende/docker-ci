@@ -11,7 +11,7 @@ RUN set -ex \
        bash rsync git tmux tree curl wget \
        python python-dev py-pip libffi-dev openssl-dev \
     && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir docker-compose ansible awscli
+    && pip install --no-cache-dir docker-compose ansible awscli \
     && mkdir -p ~/.ssh \
     && echo -e "Host *"                          >  ~/.ssh/config \
     && echo -e "\tStrictHostKeyChecking no"      >> ~/.ssh/config \
