@@ -7,7 +7,7 @@ ENV LC_COLLATE C
 RUN set -ex \
     && apk add --update --no-cache \
        make openssh-client ca-certificates \
-       bash python2 rsync git tmux tree ansible \
+       bash python py-pip rsync git tmux tree ansible \
     && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir docker-compose
 
