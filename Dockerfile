@@ -9,15 +9,16 @@ RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates \
        bash rsync git tmux tree curl wget \
-       python python-dev py-pip libffi-dev openssl-dev \
+       python2 python2-dev py-pip libffi-dev openssl-dev \
     && pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir docker-compose ansible awscli \
-    && mkdir -p ~/.ssh \
-    && echo -e "Host *"                          >  ~/.ssh/config \
-    && echo -e "\tStrictHostKeyChecking no"      >> ~/.ssh/config \
-    && echo -e "\tControlMaster auto"            >> ~/.ssh/config \
-    && echo -e "\tControlPath /tmp/ssh-%h-%p-%r" >> ~/.ssh/config \
-    && echo -e "\tControlPersist 30m"            >> ~/.ssh/config
+    && echo -e "Host *"                          >  /etc/ssh/ssh_config \
+    && echo -e "\tStrictHostKeyChecking no"      >> /etc/ssh/ssh_config \
+    && echo -e "\tServerAliveInterval 10"        >> /etc/ssh/ssh_config \
+    && echo -e "\tServerAliveCountMax 2"         >> /etc/ssh/ssh_config \
+    && echo -e "\tControlMaster auto"            >> /etc/ssh/ssh_config \
+    && echo -e "\tControlPath /tmp/ssh-%h-%p-%r" >> /etc/ssh/ssh_config \
+    && echo -e "\tControlPersist 30m"            >> /etc/ssh/ssh_config
 
 COPY bashrc /root/.bashrc
 
