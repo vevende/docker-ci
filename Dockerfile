@@ -13,7 +13,7 @@ RUN set -ex \
 
 RUN set -ex \
     && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir docker-compose ansible awscli
+    && pip install --no-cache-dir docker-compose ansible awscli requests
 
 RUN set -ex \
     && echo -e "Host *"                          >  /etc/ssh/ssh_config \
