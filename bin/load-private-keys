@@ -24,8 +24,6 @@ case "$@" in
         exit
     ;;
     *)
-        eval $(ssh-agent -s)
-
         if [ -z "$@" ]; then
             for var in $(env | grep -o "SSH_.\+_KEY" | awk 'BEGIN {FS= "="} { print $1 }');
             do
