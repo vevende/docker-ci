@@ -74,6 +74,7 @@ def sendMessage(options):
             method = 'sendSticker'
             payload['sticker'] = file_id
         else:
+            payload['disable_web_page_preview'] = options.show_webpage_preview
             payload['text'] = options.text
     else:
         endswith = options.file.name.endswith
@@ -138,6 +139,10 @@ def main():
     parser.add_argument('-s', '--silent',
                         help="Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.",
                         dest='silent', action='store_true', default=False)
+
+    parser.add_argument('--no-webpage-preview',
+                        help="Disables link previews for links in this message.",
+                        dest='show_webpage_preview', action='store_true', default=False)
 
     parser.add_argument('-p', '--parse-mode',
                         help="Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.",
