@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+import argparse
+import json
 import os
 import sys
-import requests
-import argparse
+import urllib2
+from urlparse import urlparse
 
 hook_url = 'https://hooks.slack.com/services/{token}'.format
 
@@ -20,6 +22,29 @@ class EnvDefault(argparse.Action):
         setattr(namespace, self.dest, values)
 
 
+def post_json(url, data, verbose=1):
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_data(json.dumps(data))
+    response = urllib2.urlopen(req)
+
+    if verbose > 1:
+        url = urlparse(url)
+
+        sys.stdout.write('> POST {url} HTTP/1.1\n'.format(url=url.path))
+        sys.stdout.write('> Host: %s\n' % url.hostname)
+        for key, value in req.headers.items():
+            sys.stdout.write('> %s: %s\n' % (key, value))
+        sys.stdout.write('> \n> %s\n\n' % req.get_data())
+
+        sys.stdout.write('HTTP/1.1 %s\n' % response.getcode())
+        sys.stdout.write(str(response.info()))
+        sys.stdout.write(response.read())
+        sys.stdout.write('\n')
+
+    return response
+
+
 def main():
     description = """
 Send slack messages to a registered webhook.
@@ -30,15 +55,16 @@ Some examples:
     test ! -f afile && %(prog)s -u sysbot -m ".env file is missing from enviromnet" -l error
     """
 
-    parser = argparse.ArgumentParser(description=description,formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
 
     message = parser.add_mutually_exclusive_group()
     message.add_argument('-m', '--message', help='A text message, url will be converted to links and you can use simple formatting.')
-    message.add_argument('--infile', nargs='?', help='Send a file as the message, or use the stdin, Example: echo "hi" | %(prog)s',  type=argparse.FileType('r'), default=sys.stdin)
-    
+    message.add_argument('--infile', nargs='?', help='Send a file as the message, or use the stdin, Example: echo "hi" | %(prog)s', type=argparse.FileType('r'), default=sys.stdin)
+
     icon = parser.add_mutually_exclusive_group()
     icon.add_argument('-i', '--icon-emoji', help='emoji to use as the icon for this message', dest='icon_emoji')
     icon.add_argument('--icon-url', help='URL to an image to use as the icon for this message', dest='icon_url')
+
     parser.add_argument('-v', '--verbose', help='Verbose mode', dest='verbose', action='count', default=0)
     parser.add_argument('--pre', '--preformatted', help='Format the message as a pre formatted string', dest='preformatted', action='store_true', default=False)
     parser.add_argument('--text', help='A text just bellow the title.')
@@ -82,8 +108,7 @@ Some examples:
     if options.preformatted:
         text = '\n```%s```\n' % text
 
-    message = {'text': text, "mrkdwn_in": ["text"]}
-    message['color'] = colors[options.color]
+    message = {'text': text, 'mrkdwn_in': ['text'], 'color': colors[options.color]}
 
     if options.title:
         message['title'] = options.title
@@ -91,12 +116,10 @@ Some examples:
     payload['attachments'] = [message]
 
     url = hook_url(token=options.token)
-    response = requests.post(url, json=payload, headers={'Content-Type': 'application/json'})
+    response = post_json(url, payload, options.verbose)
 
-    if options.verbose > 1:
-        print('REQUEST: ', payload)
-    if options.verbose > 0:
-        print('RESPONSE: ', response.text)
+    if 200 < response.getcode() >= 300:
+        return 1
 
 
 if __name__ == '__main__':

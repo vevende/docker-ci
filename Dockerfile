@@ -4,7 +4,6 @@ ENV LANG="C.UTF-8" \
     LC_ALL="C" \
     LC_COLLATE="C"
 
-# Use edge packages
 RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates \
@@ -13,7 +12,7 @@ RUN set -ex \
 
 RUN set -ex \
     && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir docker-compose ansible awscli requests
+    && pip install --no-cache-dir docker-compose ansible awscli
 
 RUN set -ex \
     && echo -e "Host *"                          >  /etc/ssh/ssh_config \
@@ -22,7 +21,8 @@ RUN set -ex \
     && echo -e "\tServerAliveCountMax 2"         >> /etc/ssh/ssh_config \
     && echo -e "\tControlMaster auto"            >> /etc/ssh/ssh_config \
     && echo -e "\tControlPath /tmp/ssh-%h-%p-%r" >> /etc/ssh/ssh_config \
-    && echo -e "\tControlPersist 30m"            >> /etc/ssh/ssh_config
+    && echo -e "\tControlPersist 30m"            >> /etc/ssh/ssh_config \
+    && mkdir -p /etc/ansible
 
 COPY bin/*  /usr/local/bin/
 COPY bashrc /root/.bashrc
