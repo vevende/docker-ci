@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
+set -x
 usage="$(basename "$0") [-h|--help] [VARIABLE | PATH]
 
 Load private keys into an authentication agent.
@@ -23,12 +24,13 @@ case "$@" in
         exit
     ;;
     *)
+        kill -0 $SSH_AGENT_PID
         eval $(ssh-agent -s)
 
         if [ -z "$@" ]; then
             for var in $(env | grep -o "SSH_.\+_KEY" | awk 'BEGIN {FS= "="} { print $1 }');
             do
-                ssh-add <(eval "echo '\$$var'");
+                ssh-add <(eval "echo \"\$$var'\"");
             done
         else
             if [ -f "$@" ]; then
