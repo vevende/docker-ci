@@ -24,7 +24,6 @@ case "$@" in
         exit
     ;;
     *)
-        kill -0 $SSH_AGENT_PID
         eval $(ssh-agent -s)
 
         if [ -z "$@" ]; then
