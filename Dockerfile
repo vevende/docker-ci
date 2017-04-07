@@ -22,7 +22,10 @@ RUN set -ex \
     && echo -e "\tControlMaster auto"            >> /etc/ssh/ssh_config \
     && echo -e "\tControlPath /tmp/ssh-%h-%p-%r" >> /etc/ssh/ssh_config \
     && echo -e "\tControlPersist 30m"            >> /etc/ssh/ssh_config \
-    && mkdir -p /etc/ansible
+    && mkdir -p /etc/ansible \
+    && echo "[ssh_connection]"                   > /etc/ansible/ansible.cfg \
+    && echo "ssh_args = -o ForwardAgent=yes -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s" >> /etc/ansible/ansible.cfg \
+    && echo "pipelining = True"                  >> /etc/ansible/ansible.cfg 
 
 COPY bin/*  /usr/local/bin/
 COPY bashrc /root/.bashrc
