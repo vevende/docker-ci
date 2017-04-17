@@ -35,8 +35,8 @@ def sendMessage(options):
     payload = {
         'chat_id': options.chat_id,
         'disable_notification': options.silent,
-        'parse_mode': options.parse_mode,
     }
+
     files = {}
     method = 'sendMessage'
 
@@ -74,11 +74,11 @@ def sendMessage(options):
             method = 'sendSticker'
             payload['sticker'] = file_id
         else:
+            payload['parse_mode'] = options.parse_mode
             payload['disable_web_page_preview'] = options.show_webpage_preview
             payload['text'] = options.text
     else:
         endswith = options.file.name.endswith
-        del payload['parse_mode']
         if any(map(endswith, ['.jpg', '.png', '.gif'])):
             method = 'sendPhoto'
             files['photo'] = options.file
@@ -146,7 +146,7 @@ def main():
 
     parser.add_argument('-p', '--parse-mode',
                         help="Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.",
-                        dest='parse_mode', choices=['markdown', 'html'], default='markdown')
+                        dest='parse_mode', choices=['Markdown', 'HTML'], default='Markdown')
 
     parser.add_argument('-v', '--verbose', help='Verbose mode', dest='verbose', action='count', default=0)
     parser.add_argument('--pre', '--preformatted', help='Format the message as a pre formatted string',
