@@ -4,25 +4,27 @@ import argparse
 import multiprocessing
 import signal
 import sys
-from urllib.error import HTTPError
-from urllib.request import urlopen, Request
+from urllib2 import urlopen, HTTPError, Request, URLError
 
 from bs4 import BeautifulSoup
 
 
 def fetch(url, silent=True, read=False):
-    request = Request(url, method='GET')
+    request = Request(url)
     request.add_header('User-Agent', 'Sitemap fetch')
 
     try:
         response = urlopen(request)
-    except HTTPError as error:
-        sys.stderr.write(f'{error.code} {error.msg} {url}\n')
+    except (URLError, HTTPError) as error:
+        sys.stderr.write('{error} {url}\n'.format(error=error, url=url))
         if not silent:
             exit(1)
     else:
         if response:
-            sys.stdout.write(f'{response.status} {response.msg} {response.url}\n')
+            sys.stdout.write('{status} {url}\n'.format(
+                status=response.getcode(),
+                url=response.geturl()
+            ))
         if read:
             return response.read().decode()
         else:
@@ -43,7 +45,7 @@ if __name__ == '__main__':
 
     root = BeautifulSoup(response, 'html.parser')
     loc_tags = root.select('url loc')
-    sys.stdout.write(f'Found {len(loc_tags)} urls\n')
+    sys.stdout.write('Found {0} urls\n'.format(len(loc_tags)))
 
     original_sigint_handler = signal.signal(signal.SIGINT, signal.SIG_IGN)
     pool = multiprocessing.Pool(processes=options.processes)
