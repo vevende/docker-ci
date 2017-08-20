@@ -8,7 +8,8 @@ RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates \
        bash rsync git tmux tree curl wget \
-       python2 python2-dev py-pip libffi-dev openssl-dev
+       python2 python2-dev py-pip libffi-dev openssl-dev \
+       pngcrush jpegoptim
 
 RUN set -ex \
     && pip install --no-cache-dir --upgrade pip \
