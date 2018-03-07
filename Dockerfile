@@ -1,4 +1,4 @@
-FROM docker:1.13
+FROM docker:18
 
 ENV LANG="C.UTF-8" \
     LC_ALL="C" \
@@ -26,7 +26,11 @@ RUN set -ex \
     && mkdir -p /etc/ansible \
     && echo "[ssh_connection]"                   > /etc/ansible/ansible.cfg \
     && echo "ssh_args = -o ForwardAgent=yes -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s" >> /etc/ansible/ansible.cfg \
-    && echo "pipelining = True"                  >> /etc/ansible/ansible.cfg 
+    && echo "pipelining = True"                  >> /etc/ansible/ansible.cfg \
+    && mkdir ~/.aws \
+    && echo [default] > ~/.aws/config \
+    && echo region=us-east-1 >> ~/.aws/config \
+    && echo output=json >> ~/.aws/config
 
 COPY bin/*  /usr/local/bin/
 COPY bashrc /root/.bashrc
