@@ -35,7 +35,7 @@ class TestCase(unittest.TestCase):
         run('which python')
 
         ret = run('python -V')
-        assert ret.stderr.strip() == 'Python 2.7.13', ret.stderr
+        assert ret.stderr.strip() == 'Python 2.7.14', ret.stderr
 
     def test_slugify(self):
         ret = run('slugify google.com')
