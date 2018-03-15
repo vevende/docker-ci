@@ -9,12 +9,13 @@ RUN set -ex \
        build-base openssh-client ca-certificates \
        bash rsync git tmux tree curl wget \
        python3 python3-dev libffi-dev openssl-dev \
-       pngcrush jpegoptim 
+       pngcrush jpegoptim
 
 RUN set -ex \
     && pip3 install --no-cache-dir --upgrade pip \
     && pip3 install --no-cache-dir docker-compose ansible awscli beautifulsoup4 boot.py \
-    && curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+    && curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest \
+    && chmod +x /usr/local/bin/ecs-cli
 
 RUN set -ex \
     && echo -e "Host *"                          >  /etc/ssh/ssh_config \
