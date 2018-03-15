@@ -8,12 +8,12 @@ RUN set -ex \
     && apk add --update --no-cache \
        build-base openssh-client ca-certificates \
        bash rsync git tmux tree curl wget \
-       python3 python3-dev py-pip libffi-dev openssl-dev \
-       pngcrush jpegoptim
+       python3 python3-dev libffi-dev openssl-dev \
+       pngcrush jpegoptim 
 
 RUN set -ex \
-    && pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir docker-compose ansible awscli beautifulsoup4 boot.py
+    && pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install --no-cache-dir docker-compose awscli beautifulsoup4 boot.py
 
 RUN set -ex \
     && echo -e "Host *"                          >  /etc/ssh/ssh_config \
