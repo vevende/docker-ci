@@ -11,11 +11,14 @@ def run(command, silent=False):
                            stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE)
     process.wait()
-
-    if not silent:
-        assert process.returncode == 0
-
     stdout, stderr = process.communicate()
+
+    if process.returncode == 0:
+        print(stdout)
+        print(stderr)
+        
+        if not silent:
+            assert False, f'Command exit with error: {stderr}'
 
     return Return(stdout, stderr, process.returncode)
 
@@ -31,11 +34,11 @@ class TestCase(unittest.TestCase):
         run('which bash')
         run('which tree')
         run('which tmux')
-        run('which pip')
+        run('which pip3')
         run('which python3')
 
         ret = run('python3 -V')
-        assert ret.stderr.strip() == 'Python 3.6.4', ret.stderr
+        assert ret.stderr.strip() == 'Python 3.6.3', ret.stderr
 
     def test_slugify(self):
         ret = run('slugify google.com')
