@@ -32,10 +32,10 @@ class TestCase(unittest.TestCase):
         run('which tree')
         run('which tmux')
         run('which pip')
-        run('which python')
+        run('which python3')
 
-        ret = run('python -V')
-        assert ret.stderr.strip() == 'Python 2.7.14', ret.stderr
+        ret = run('python3 -V')
+        assert ret.stderr.strip() == 'Python 3.6.4', ret.stderr
 
     def test_slugify(self):
         ret = run('slugify google.com')
