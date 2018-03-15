@@ -13,7 +13,7 @@ RUN set -ex \
 
 RUN set -ex \
     && pip3 install --no-cache-dir --upgrade pip \
-    && pip3 install --no-cache-dir docker-compose awscli beautifulsoup4 boot.py
+    && pip3 install --no-cache-dir docker-compose ansible awscli beautifulsoup4 boot.py
 
 RUN set -ex \
     && echo -e "Host *"                          >  /etc/ssh/ssh_config \
