@@ -13,7 +13,7 @@ RUN set -ex \
 
 RUN set -ex \
     && pip3 install --no-cache-dir --upgrade pip \
-    && pip3 install --no-cache-dir --upgrade docker-compose ansible awscli beautifulsoup4 boot.py runfile.py \
+    && pip3 install --no-cache-dir --upgrade docker-compose ansible awscli beautifulsoup4 boot.py \
     && curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest \
     && chmod +x /usr/local/bin/ecs-cli
 
